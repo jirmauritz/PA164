@@ -55,6 +55,10 @@ for (x in 1:length(files.broadsheet)) {
 documents.tabloid <- iconv(enc2utf8(documents.tabloid), sub = "byte")
 documents.broadsheet <- iconv(enc2utf8(documents.broadsheet), sub = "byte")
 
+# Named entity recognition
+command = paste('java', '-mx600m', 'edu.stanford.nlp.ie.crf.CRFClassifier', '-loadClassifier', 'resources/classifiers/english.conll.4class.distsim.crf.ser.gz')
+a <- system(paste("echo \'The former monitoring base of the National Security Agency (NSA), which belongs to the German Federal Intelligence Agency (BND), in Bad Aibling,     south of Munich, on June 6, 2014. (Michaela Rehle/Reuters)  For politicians in Washington, the German uproar over allegations that the NSA had spied on Merkel and collected the data of millions of Germans was remarkable.\'", " | ", command), intern = TRUE)
+
 # create Corpus of tabloids and transform
 corpus.tabloid <- VCorpus(VectorSource(documents.tabloid))
 corpus.tabloid <- tm_map(corpus.tabloid, removePunctuation)
