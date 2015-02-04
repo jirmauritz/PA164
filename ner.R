@@ -50,14 +50,14 @@ createMatricesOfCount <- function(tabloids, broadsheets) {
   
   corpus.tabloid <- VCorpus(VectorSource(tabloids))
   corpus.broadsheet <- VCorpus(VectorSource(broadsheets))
-  dt.Matrix.tabloid <- DocumentTermMatrix(corpus.tabloid)
-  dt.Matrix.broadsheet <- DocumentTermMatrix(corpus.broadsheet)
+  tf.Matrix.tabloid <- DocumentTermMatrix(corpus.tabloid)
+  tf.Matrix.broadsheet <- DocumentTermMatrix(corpus.broadsheet)
   
-  dt.Data.t <- data.frame(inspect(dt.Matrix.tabloid))
-  dt.Data.t$DOC.CLASS <- rep("tabloid", 1000)
-  dt.Data.b <- data.frame(inspect(dt.Matrix.broadsheet))
-  dt.Data.b$DOC.CLASS <- rep("broadsheet", 1000)
-  dt.Data <- rbind(dt.Data.t, dt.Data.b)
+  tf.Data.t <- data.frame(inspect(tf.Matrix.tabloid))
+  tf.Data.t$DOC.CLASS <- rep("tabloid", 1000)
+  tf.Data.b <- data.frame(inspect(tf.Matrix.broadsheet))
+  tf.Data.b$DOC.CLASS <- rep("broadsheet", 1000)
+  tf.Data <- rbind(tf.Data.t, tf.Data.b)
   
   tfidf.Matrix.tabloid <- DocumentTermMatrix(corpus.tabloid,
                                              control = list(weighting = 
@@ -74,7 +74,7 @@ createMatricesOfCount <- function(tabloids, broadsheets) {
   tfidf.Data.b$DOC.CLASS <- rep("broadsheet", 1000)
   tfidf.Data <- rbind(tfidf.Data.t, tfidf.Data.b)
   
-  list(dt.Data, tfidf.Data)
+  list(tf.Data, tfidf.Data)
 }
 
 
@@ -98,15 +98,21 @@ command = paste('java', '-mx600m', 'edu.stanford.nlp.ie.crf.CRFClassifier', '-lo
 
 # prepare files
 appendEndOfFile(files.tabloid)
-appendEndOfFile(files.broadsheet)
-
 # tag
-lines.tabloid <- system(paste(command, tPath, sep=''), intern = TRUE)
-lines.broadsheet <- system(paste(command, bPath, sep=''), intern = TRUE)
-
-# return files to the previous form
-deleteEndOfFile(files.tabloid)
-deleteEndOfFile(files.broadsheet)
+tryCatch({
+  lines.tabloid <- system(paste(command, tPath, sep=''), intern = TRUE)
+}, finally = {
+  # return files to the previous form
+  deleteEndOfFile(files.tabloid)
+})
+# prepare files
+appendEndOfFile(files.broadsheet)
+tryCatch({
+  lines.broadsheet <- system(paste(command, bPath, sep=''), intern = TRUE)
+}, finally = {
+  # return files to the previous form
+  deleteEndOfFile(files.broadsheet)
+})
 
 # only utf8 characters
 lines.tabloid <- iconv(enc2utf8(lines.tabloid), sub = "byte")
@@ -136,3 +142,7 @@ for (line in lines.broadsheet) {
 
 # PROCESS MATRICES
 matricesOfCount <- createMatricesOfCount(documents.tabloid, documents.broadsheet)
+dir.create("matrices", showWarnings = FALSE)
+write.csv(matricesOfCount[1], file="matrices/tf.matrix.counts.csv")
+write.csv(matricesOfCount[2], file="matrices/tfidf.matrix.counts.csv")
+
