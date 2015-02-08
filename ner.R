@@ -6,8 +6,6 @@ library(stringr)
 # CONSTANTS
 tPath = "datasets/tabloids/"
 bPath = "datasets/broadsheets/"
-tNerPath = "datasets/tabloidsNER/"
-bNerPath = "datasets/broadsheetsNER/"
 EOFSign = "ENDOFFILE"
 attrs = c('/TIME', '/LOCATION', '/ORGANIZATION', '/PERSON', '/MONEY', '/PERCENT', '/DATE')
 

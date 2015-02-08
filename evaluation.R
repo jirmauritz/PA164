@@ -5,8 +5,7 @@ library(RWeka)
 library(caret)
 
 # CONTANTS
-algorithms <- c("J48", "JRip", "svmLinear", "rf", "knn", "lda", "plr", 
-                "bayesglm", "rpart", "avNNet", "mlp", "ada")
+algorithms <- c("J48", "svmLinear", "knn", "bayesglm", "rpart", "mlp")
 path.matrices <- "matrices/"
 # FUNCTIONS
 
@@ -37,8 +36,12 @@ for (algorithm in algorithms) {
   alg.results <- c()
   for (x in 1:length(matrices.names)) {
     print(paste("For data: ", matrices.names[x]))
-    data <- data.frame(matrices.data[x])
-    accuracy <- evaluate_model(data, algorithm)
+    data <- data.frame(matrices.data[x])   
+    tryCatch ({
+      accuracy <- evaluate_model(data, algorithm)
+    }, error = function(e) {
+      data <- NA
+    })
     alg.results <- c(alg.results, accuracy)
   }
   results[algorithm] <- alg.results
