@@ -119,7 +119,7 @@ for (doc in trees.broadsheet) {
   pos <- pos + count.of.lines
 }
 
-tf.matrix$DOC.CLASS <- c(rep("tabloid",1000),rep("broadsheet",1000))
+tf.matrix$DOC.CLASS <- c(rep("tabloid",length(tree.tabloid)),rep("broadsheet",length(tree.broadsheet)))
 
 # OUTPUT MATRICES
 dir.create("matrices", showWarnings = FALSE)
