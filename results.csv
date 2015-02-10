@@ -1,0 +1,5 @@
+"","matrices.names","J48","svmLinear","knn","bayesglm","rpart","mlp","best","best_alg"
+"1","tf.bagow.csv",0.9675,0.992,0.9175,0.9965,0.7105,0.9925,0.9965,"bayesglm"
+"2","tfidf.bagow.csv",0.9695,0.9975,0.839,0.998,0.7655,0.994,0.998,"bayesglm"
+"3","tfidf.ner.csv",0.9965,0.9485,0.92,0.9515,0.578,0.887,0.9965,"J48"
+"4","tf.ner.csv",0.8895,0.908,0.888,0.907,0.678,0.8795,0.908,"svmLinear"
