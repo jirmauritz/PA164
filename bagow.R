@@ -52,16 +52,18 @@ corpus <- tm_map(corpus, content_transformer(removeNumbers))
 # bigger zero to smaller one.
 dtm <- makeDTM(0.90)
 
-#dtm.w <- makeDTM(0.90, ctrl=list(weighting =
-#                          function(x) weightTfIdf(x, normalize = T)))
+dtm.w <- makeDTM(0.90, ctrl=list(weighting =
+                          function(x) weightTfIdf(x, normalize = T)))
 
 
 doc.class <- matrix(c(rep("tabloid",1000),rep("broadsheet",1000)),
             nrow = 2000, ncol = 1, dimnames = list(c(),c("DOC.CLASS")))
 
 dtm <- cbind.data.frame(dtm,doc.class)
+dtm.w <- cbind.data.frame(dtm.w,doc.class)
 
 dir.create("matrices", showWarnings = FALSE)
-write.csv(dtm, "matrices/bagow.csv")
+write.csv(dtm, "matrices/tf.bagow.csv")
+write.csv(dtm.w, "matrices/tfidf.bagow.csv")
 
 

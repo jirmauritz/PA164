@@ -29,6 +29,13 @@ for (file in files.matrices) {
   matrices.data[length(matrices.data)+1] <- list(matrix)
 }
 
+# remove first column X (counts)
+for (mat in 1:length(matrices.data)) {
+  df <- data.frame(matrices.data[mat])
+  df <- df[,-(1), drop=FALSE]
+  matrices.data[mat] <- list(df)
+}
+
 results <- data.frame(matrices.names)
 # EVALUATE
 for (algorithm in algorithms) {

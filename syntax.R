@@ -36,11 +36,22 @@ splitOutputToDocuments <- function(text) {
 # PREPARE
 print("Preparing data...")
 # Syntax parsing - make tree out of each sentence
-command = paste('java', '-mx500m', 'edu.stanford.nlp.parser.lexparser.LexicalizedParser', '-outputFormat', 'oneline', 'resources/models/englishPCFG.caseless.ser.gz', '2>&1 ')
+command = paste('java', '-mx600m', 'edu.stanford.nlp.parser.lexparser.LexicalizedParser', '-outputFormat', 'oneline', 'resources/models/englishPCFG.caseless.ser.gz', '2>&1 ')
 
 # tag
 trees.tabloid <- splitOutputToDocuments(system(paste(command, tPath, '*', sep=''), intern=TRUE))
 trees.broadsheet <- splitOutputToDocuments(system(paste(command, bPath, '*', sep=''), intern=TRUE))
+
+count <- 0
+for(doc in trees.tabloid) {
+  count <- count + length(strsplit(doc, '\n')[[1]])
+}
+print(paste("Count of sentences of tabloids:", count, sep=' '))
+count <- 0
+for (doc in trees.broadsheet) {
+  count <- count + length(strsplit(doc, '\n')[[1]])
+}
+print(paste("Count of sentences of broadsheets:", count, sep=' '))
 
 # FIND SUBTREES
 print("Finding subtrees...")
@@ -123,5 +134,5 @@ tf.matrix$DOC.CLASS <- c(rep("tabloid",length(tree.tabloid)),rep("broadsheet",le
 
 # OUTPUT MATRICES
 dir.create("matrices", showWarnings = FALSE)
-write.csv(tf.matrix, file="matrices/tf.matrix.subtrees.csv")
+write.csv(tf.matrix, file="matrices/tf.subtrees.csv")
 

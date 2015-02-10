@@ -141,6 +141,6 @@ for (line in lines.broadsheet) {
 # PROCESS MATRICES
 matricesOfCount <- createMatricesOfCount(documents.tabloid, documents.broadsheet)
 dir.create("matrices", showWarnings = FALSE)
-write.csv(matricesOfCount[1], file="matrices/tf.matrix.counts.csv")
-write.csv(matricesOfCount[2], file="matrices/tfidf.matrix.counts.csv")
+write.csv(matricesOfCount[1], file="matrices/tf.ner.csv")
+write.csv(matricesOfCount[2], file="matrices/tfidf.ner.csv")
 

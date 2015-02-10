@@ -13,25 +13,29 @@ clean:
 	@rm -f results.csv
 
 # Bag of words
-matrices/bagow.csv: $(BAGOW)
+matrices/tf.bagow.csv: $(BAGOW)
 	Rscript $(BAGOW)
+
+matrices/tfidf.bagow.csv: matrices/tf.bagow.csv
+	# do nothing
+	noop
 
 
 
 # process Named Entity Recognition
-matrices/tf.matrix.counts.csv: $(NER)
+matrices/tf.ner.csv: $(NER)
 	Rscript $(NER)
 
-matrices/tfidf.matrix.counts.csv: matrices/tf.matrix.counts.csv
+matrices/tfidf.ner.csv: matrices/tf.ner.csv
 	#do nothing
 	noop
 
 
 # syntax
-matrices/tf.matrix.subtrees.csv: $(SYNTAX)
+matrices/tf.subtrees.csv: $(SYNTAX)
 	Rscript $(SYNTAX)
 
 
 # evaluate
-results.csv: matrices/tf.matrix.counts.csv matrices/tfidf.matrix.counts.csv matrices/bagow.csv matrices/tf.matrix.subtrees.csv
+results.csv: matrices/tf.ner.csv matrices/tf.bagow.csv matrices/tf.subtrees.csv
 	Rscript $(EVALUATION)
