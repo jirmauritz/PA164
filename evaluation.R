@@ -4,7 +4,28 @@ library(rJava)
 library(RWeka)
 library(caret)
 
+# merge tables
+bag <- read.csv("matrices/tf.bagow.csv")
+bag["DOC.CLASS"] <- NULL
+bag[1] <- NULL
+ner <- read.csv("matrices/tf.ner.csv")
+ner[1] <- NULL
+bag.ner <- cbind(bag,ner)
+write.csv(bag.ner, file="matrices/tf.bagow+ner.csv")
+
+bag <- read.csv("matrices/tfidf.bagow.csv")
+bag["DOC.CLASS"] <- NULL
+bag[1] <- NULL
+ner <- read.csv("matrices/tfidf.ner.csv")
+ner[1] <- NULL
+bag.ner <- cbind(bag,ner)
+write.csv(bag.ner, file="matrices/tfidf.bagow+ner.csv")
+
+rm(bag,ner,bag.ner)
+
+
 # CONTANTS
+#
 algorithms <- c("J48", "svmLinear", "knn", "bayesglm", "rpart", "mlp")
 path.matrices <- "matrices/"
 # FUNCTIONS
