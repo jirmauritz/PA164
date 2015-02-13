@@ -56,7 +56,7 @@ print(paste("Count of sentences of broadsheets:", count, sep=' '))
 # FIND SUBTREES
 print("Finding subtrees...")
 ## set these parameters !!!:
-min_support <- 0.5
+min_support <- 0.8
 induced_trees <- T  # if FALSE, then embedded trees
 ordered_trees <- T
 

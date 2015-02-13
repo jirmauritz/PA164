@@ -5,13 +5,25 @@ library(RWeka)
 library(caret)
 
 # merge tables
+matrices <- list.files("matrices/")
+if ("tf.bagow.csv" %in% matrices &&
+  "tf.ner.csv" %in% matrices &&
+  "tf.subtrees.csv" %in% matrices)  {
+
 bag <- read.csv("matrices/tf.bagow.csv")
 bag["DOC.CLASS"] <- NULL
 bag[1] <- NULL
 ner <- read.csv("matrices/tf.ner.csv")
 ner[1] <- NULL
+syn <- read.csv("matrices/tf.subtrees.csv")
+syn[1] <- NULL
 bag.ner <- cbind(bag,ner)
+bag.syn <- cbind(bag,syn)
+bag.ner["DOC.CLASS"] <- NULL
+all <- cbind(bag.ner,syn)
 write.csv(bag.ner, file="matrices/tf.bagow+ner.csv")
+write.csv(bag.syn, file="matrices/tf.bagow+syntax.csv")
+write.csv(all, file="matrices/tf.all.csv")
 
 bag <- read.csv("matrices/tfidf.bagow.csv")
 bag["DOC.CLASS"] <- NULL
@@ -21,7 +33,11 @@ ner[1] <- NULL
 bag.ner <- cbind(bag,ner)
 write.csv(bag.ner, file="matrices/tfidf.bagow+ner.csv")
 
-rm(bag,ner,bag.ner)
+rm(bag,ner,bag.ner,syn,bag.syn,all)
+} else {
+  print("missing files, skipping merge")
+}
+rm(matrices)
 
 
 # CONTANTS
